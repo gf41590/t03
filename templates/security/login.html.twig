@@ -2,7 +2,13 @@
 
 {% block title %}Log in!{% endblock %}
 
+ {% block stylesheets %}
+      <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" />
+      <link href="{{ asset('js/js.css') }}" type="text/javascript" rel="stylesheet" />
+  {% endblock %}
+
 {% block body %}
+
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -39,4 +45,15 @@
         Sign in
     </button>
 </form>
+
+{% block article %}
+<h1 class="h3 mb-3 font-weight-normal">If you don't have an account register her</h1>
+    <button class="myButton"  type="submit" ><a href="{{ url('localhost:8000/register') }}">
+        Register
+    </a></button>
+
+
+
+{% endblock %}
+
 {% endblock %}
