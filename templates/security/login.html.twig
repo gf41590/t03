@@ -48,11 +48,12 @@
 
 {% block article %}
 <h1 class="h3 mb-3 font-weight-normal">If you don't have an account register her</h1>
-    <button class="myButton"  type="submit" ><a href="{{ url('localhost:8000/register') }}">
-        Register
-    </a></button>
+    
 
 
+{% block link  %}   
+  <button><a href="{{ "http://localhost:8000/register" }}" >{{ "go to registration" }}</a></button>
+{% endblock %}
 
 {% endblock %}
 
