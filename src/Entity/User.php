@@ -23,7 +23,7 @@ class User implements UserInterface
      */
     private $username;
 
-        /**
+    /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
@@ -39,10 +39,10 @@ class User implements UserInterface
      */
     private $password;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $university;
 
     /**
      * A visual identifier that represents this user.
@@ -72,6 +72,8 @@ class User implements UserInterface
 
         return $this;
     }
+
+
 
     /**
      * @see UserInterface
@@ -123,4 +125,17 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    public function getUniversity(): ?string
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(string $university): self
+    {
+        $this->university = $university;
+
+        return $this;
+    }
+
 }

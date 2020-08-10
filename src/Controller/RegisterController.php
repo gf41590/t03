@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -22,6 +23,7 @@ class RegisterController extends AbstractController
        $form = $this->createFormBuilder()
             ->add('username')
             ->add('email', EmailType::class)
+            ->add('university', TextType::class)
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => true,
@@ -44,6 +46,7 @@ class RegisterController extends AbstractController
             $user = new User();
             $user->setUsername($data['username']);
             $user->setEmail($data['email']);
+            $user->setUniversity($data['university']);
             $user->setPassword(
                 $passEncoder->encodePassword($user, $data['password'])
             );
