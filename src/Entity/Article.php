@@ -121,12 +121,12 @@ class Article
         return $this;
     }
 
-    public function getParticipationsContributors(): ?int
+    public function getParticipationsContributors(): ?string
     {
         return $this->participations_contributors;
     }
 
-    public function setParticipationsContributors(?int $participations_contributors): self
+    public function setParticipationsContributors(?string $participations_contributors): self
     {
         $this->participations_contributors = $participations_contributors;
 

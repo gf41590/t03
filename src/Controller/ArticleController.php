@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -10,9 +10,49 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Article;
+use App\Repository\ArticleRepository;
+use App\Form\ArticleType;
 
 class ArticleController extends AbstractController
 {
+
+    /**
+     * @Route("/", name="article_index", methods={"GET"})
+     */
+    public function index($id, $email, ArticleRepository $articleRepository): Response
+    {
+        return $this->render('index/index.html.twig', [
+            'article' => $articleRepository->findAll(),
+            'id' => $id,
+            'email' => $email,
+        ]);
+    }
+
+    /**
+     * @Route("/art", name="art")
+     */
+    public function indexAction()
+    {
+        $article = $this->getDoctrine()
+            ->getRepository($articleRepository)
+            ->findAll();
+
+            return $this->render('index/index.html.twig', array (               
+                'article' => $article
+            ));
+    }
+
+     /**
+     * @Route("/{id}", name="article_show", methods={"GET"}, requirements={"id":"\d+"})
+     */
+    public function show(Article $article): Response
+    {
+        return $this->render('index/index.html.twig', [
+            'article' => $article,
+        ]);
+    }
+
+
     /**
      * @Route("/article", name="article")
      */
@@ -65,4 +105,6 @@ class ArticleController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+
 }
