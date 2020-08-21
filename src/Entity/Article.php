@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @ORM\Table(name="article")
  */
 class Article
 {
@@ -41,12 +44,12 @@ class Article
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $participations_contributors;
+    private $participationsContributors;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $ministerial_points;
+    private $ministerialPoints;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -66,7 +69,8 @@ class Article
     /**
      * @ORM\Column(type="date")
      */
-    private $date_of_publication;
+    private $date;
+    
 
     public function getId(): ?int
     {
@@ -123,24 +127,24 @@ class Article
 
     public function getParticipationsContributors(): ?string
     {
-        return $this->participations_contributors;
+        return $this->participationsContributors;
     }
 
-    public function setParticipationsContributors(?string $participations_contributors): self
+    public function setParticipationsContributors(?string $participationsContributors): self
     {
-        $this->participations_contributors = $participations_contributors;
+        $this->participationsContributors = $participationsContributors;
 
         return $this;
     }
 
     public function getMinisterialPoints(): ?int
     {
-        return $this->ministerial_points;
+        return $this->ministerialPoints;
     }
 
-    public function setMinisterialPoints(int $ministerial_points): self
+    public function setMinisterialPoints(int $ministerialPoints): self
     {
-        $this->ministerial_points = $ministerial_points;
+        $this->ministerialPoints = $ministerialPoints;
 
         return $this;
     }
@@ -181,14 +185,14 @@ class Article
         return $this;
     }
 
-    public function getDateOfPublication(): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->date_of_publication;
+        return $this->date;
     }
 
-    public function setDateOfPublication(\DateTimeInterface $date_of_publication): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->date_of_publication = $date_of_publication;
+        $this->date = $date;
 
         return $this;
     }

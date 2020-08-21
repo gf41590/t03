@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="user")
  */
 class User implements UserInterface
 {
@@ -44,6 +47,17 @@ class User implements UserInterface
      */
     private $university;
 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Article", mappedBy="user_id")
+     */
+    private $article;
+
+    public function __construct()
+    {
+        $this->article = new ArrayCollection();
+    }
+    
     /**
      * A visual identifier that represents this user.
      *
@@ -83,7 +97,7 @@ class User implements UserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
+       
         return array_unique($roles);
     }
 
@@ -136,6 +150,14 @@ class User implements UserInterface
         $this->university = $university;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticle(): Collection
+    {
+        return $this->article;
     }
 
 }

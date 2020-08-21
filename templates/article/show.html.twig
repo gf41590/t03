@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+ {% block stylesheets %}
+      <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" />
+  {% endblock %}
+
+{% block body %}
+    <table class="table">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ article.id }}</td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td>{{ article.title }}</td>
+        </tr>
+        <tr>
+            <th>Author</th>
+            <td>{{ article.author }}</td>
+        </tr>
+        <tr>
+            <th>Participation</th>
+            <td>{{ article.participation}}</td>
+        </tr>
+        <tr>
+            <th>Contributors</th>
+            <td>{{ article.contributors}}</td>
+        </tr>
+        <tr>
+            <th>participations Contributors</th>
+            <td>{{ article.participationsContributors}}</td>
+        </tr>
+        <tr>
+            <th>Ministerial Points</th>
+            <td>{{ article.ministerialPoints}}</td>
+        </tr>
+        <tr>
+            <th>Journal</th>
+            <td>{{ article.journal}}</td>
+        </tr>
+        <tr>
+            <th>Conference</th>
+            <td>{{ article.conference}}</td>
+        </tr>
+        <tr>
+            <th>Doi</th>
+            <td>{{ article.doi}}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ article.date ? article.date|date('Y-m-d') : '' }}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

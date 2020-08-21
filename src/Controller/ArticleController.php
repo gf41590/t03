@@ -17,37 +17,83 @@ class ArticleController extends AbstractController
 {
 
     /**
-     * @Route("/", name="article_index", methods={"GET"})
+     * @Route("/", name="article_index", methods={"GET","HEAD"})
      */
-    public function index($id, $email, ArticleRepository $articleRepository): Response
+    public function index( ArticleRepository $articleRepository): Response
     {
         return $this->render('index/index.html.twig', [
-            'article' => $articleRepository->findAll(),
-            'id' => $id,
-            'email' => $email,
+            "article" => $articleRepository->findAll(),
+            
         ]);
     }
 
-    /**
-     * @Route("/art", name="art")
-     */
-    public function indexAction()
-    {
-        $article = $this->getDoctrine()
-            ->getRepository($articleRepository)
-            ->findAll();
 
-            return $this->render('index/index.html.twig', array (               
-                'article' => $article
-            ));
-    }
+    // /**
+    //  * @Route("/art", name="art", methods={"GET"})
+    //  */
+    // public function view(Article $article): Response
+    // {
+    //     return $this->render('test/index.html.twig', [
+    //         'article' => $article,
+    //     ]);
+    // }
+
+    // /**
+    //  * @Route("/qwe", name="qwe", methods={"GET"})
+    //  */
+    // public function test(ArticleRepository $articleRepository,Article $article): Response
+    // {
+    //     $articleRepository = $entityManager->getRepository('Article::class');
+    //     $article = $artilceRepository->findAll();
+
+    //     foreach ($article as $article) {
+    //     echo sprintf("-%s\n", $article->getName());
+    //     }
+
+    //     return $this->render('test/index.html.twig', [
+    //         'article' => $article,
+    //     ]);
+
+    // }
+
+    // /**
+    //  * @Route("/nope", methods={"GET"})
+    //  */
+    // public function listAction(Article $article)
+    // {
+    //     $entityManager = $this->getDoctrine()->getManager();
+    //     $article = $em->getRepository('Article::class')
+    //         ->findAll();
+    //         dump($article);die;
+
+    //         return $this->render('test/index.html.twig', ['article'=>$article]);
+    // }
+
+    /**
+     * @Route("/art", name="art", methods={"GET"})
+
+     */
+    // public function indexAction(ArticleRepository $articleRepository,Article $article)
+    
+    // {
+       
+
+    //         $article = $this->getDoctrine()
+    //         ->getRepository($articleRepository)
+    //         ->findAll();
+
+    //         return $this->render('test/index.html.twig', array (               
+    //             'article' => $article
+    //         ));
+        
+    // }
 
      /**
-     * @Route("/{id}", name="article_show", methods={"GET"}, requirements={"id":"\d+"})
+     * @Route("/{id}", name="article_show", methods={"GET","HEAD"}, requirements={"id":"\d+"})
      */
     public function show(Article $article): Response
     {
-        return $this->render('index/index.html.twig', [
+        return $this->render('article/show.html.twig', [
             'article' => $article,
         ]);
     }
@@ -68,7 +114,7 @@ class ArticleController extends AbstractController
         ->add('journal', TextType::class)
         ->add('conference', TextType::class)
         ->add('doi')
-        ->add('date_of_publication', DateType::class)
+        ->add('date', DateType::class)
         ->add('article', SubmitType::class, [ 
             'attr' => [
                 'class' => 'btn btn-success'
@@ -90,7 +136,7 @@ class ArticleController extends AbstractController
             $article->setJournal($data['journal']);
             $article->setConference($data['conference']);
             $article->setDoi($data['doi']);
-            $article->setDateOfPublication($data['date_of_publication']);
+            $article->setDate($data['date']);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);

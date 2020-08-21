@@ -22,7 +22,7 @@ class ArticleType extends AbstractType
             ->add('journal')
             ->add('conference ')
             ->add('doi')
-            ->add('date_of_publication ')
+            ->add('date ')
         ;
     }
 
