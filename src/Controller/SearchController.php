@@ -10,15 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class SearchController extends AbstractController
 {
     /**
-     * @Route("/search", name="search")
+     * @Route("/search", name="search",methods={"GET"})
      */
-    public function index()
-    {
-        return $this->render('search/index.html.twig', [
-            'controller_name' => 'SearchController',
-        ]);
-    }
-
     public function searchBar()
     {
         $form = $this->createFormBuilder(null)
@@ -31,7 +24,7 @@ class SearchController extends AbstractController
         ])
         ->getForm();
 
-        return $this->render('search/index.html.twig', [
+        return $this->render('search/search.html.twig', [
             'form' => $form ->createView()
         ]);
     }

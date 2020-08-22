@@ -2,7 +2,82 @@
 
 {% block title %}Hello TestController!{% endblock %}
 
+ {% block stylesheets %}
+      <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" />
+  {% endblock %}
+
 {% block body %}
     <h1>TEST</h1>
-   
+    <table class="table">
+    <tbody>
+    
+        <tr>
+            <th>Id</th>
+            {% for article in article %}
+            <td>{{ article.id }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Title</th>
+            {% for article in article %}
+            <td>{{ article.title }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Author</th>
+            {% for article in article %}
+            <td>{{ article.author }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Participation</th>
+            {% for article in article %}
+            <td>{{ article.participation}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Contributors</th>
+            {% for article in article %}
+            <td>{{ article.contributors}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>participations Contributors</th>
+            {% for article in article %}
+            <td>{{ article.participationsContributors}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Ministerial Points</th>
+            {% for article in article %}
+            <td>{{ article.ministerialPoints}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Journal</th>
+            {% for article in article %}
+            <td>{{ article.journal}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Conference</th>
+            {% for article in article %}
+            <td>{{ article.conference}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Doi</th>
+            {% for article in article %}
+            <td>{{ article.doi}}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Date</th>
+            {% for article in article %}
+            <td>{{ article.date ? article.date|date('Y-m-d') : '' }}</td>
+            {% endfor %}
+        </tr>
+        
+        </tbody>
+    </table>
 {% endblock %}

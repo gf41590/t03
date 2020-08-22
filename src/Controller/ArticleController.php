@@ -21,12 +21,14 @@ class ArticleController extends AbstractController
      */
     public function index( ArticleRepository $articleRepository): Response
     {
+        
         return $this->render('index/index.html.twig', [
             "article" => $articleRepository->findAll(),
             
         ]);
     }
 
+    
 
     // /**
     //  * @Route("/art", name="art", methods={"GET"})
@@ -98,7 +100,14 @@ class ArticleController extends AbstractController
         ]);
     }
 
+    public function sho(Article $article,ArticleRepository $articleRepository): Response
+    {
+    $article = $articleRepository->findAll();
 
+    return $this->render('index/index.html.twig', [
+        'article' => $article,
+    ]);
+    }
     /**
      * @Route("/article", name="article")
      */
@@ -152,5 +161,52 @@ class ArticleController extends AbstractController
         ]);
     }
 
+    // /**
+    //  * @Route("/{id}/art", name="art", methods={"GET"})
+    //  */
+    // public function show02(Article $article,ArticleRepository $articleRepository): Response
+    // {
+    //     $repository = $entityManager->getRepository(Article::class);
+    //     $article = $repository->findAll();
+    //     dd($article);
 
+    //     return $this->render('index/index.html.twig', [
+    //         'article' => $article,
+    //     ]);
+    // }
+
+
+
+    /**
+     * @Route("/product/{id}", name="product_show")
+     */
+    public function qwe($id)
+    {
+        $article = $this->getDoctrine()
+            ->getRepository(Article::class)
+            ->find($id);
+
+            if (!$article) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+        
+
+        return $this->render('test/index.html.twig', ['article' => $article]);
+
+    }
+
+
+    /**
+     * @Route("/art", name="art_show")
+     */
+    public function asd()
+    {
+        $repository = $this->getDoctrine()->getRepository(Article::class);
+
+        $article = $repository->findAll();
+
+        return $this->render('test/index.html.twig', ['article' => $article]);
+    }
 }

@@ -37,7 +37,7 @@ class Article
 
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=1024, nullable=true)
      */
     private $contributors;
 
@@ -113,12 +113,12 @@ class Article
         return $this;
     }
 
-    public function getContributors(): ?int
+    public function getContributors(): ?string
     {
         return $this->contributors;
     }
 
-    public function setContributors(?int $contributors): self
+    public function setContributors(?string $contributors): self
     {
         $this->contributors = $contributors;
 
