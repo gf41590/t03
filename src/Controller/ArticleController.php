@@ -209,4 +209,36 @@ class ArticleController extends AbstractController
 
         return $this->render('test/index.html.twig', ['article' => $article]);
     }
+
+
+    /** 
+    * @Route("/{id}/edit", name="article_edit" ,methods={"GET","POST"})
+    */
+   public function update($id,Request $request, Article $article): Response
+   {
+       $entityManager = $this->getDoctrine()->getManager();
+       $article = $entityManager->getRepository(Article::class)->find($id);
+   
+       if (!$article) {
+           throw $this->createNotFoundException(
+               'No article found for id '.$id
+           );
+       }
+   
+       $article = $this->createForm(ArticleType::class, $article);
+       $article->handleRequest($request);
+
+       if ($article->isSubmitted() && $article->isValid()) {
+           $this->getDoctrine()->getManager()->flush();
+           return $this->redirectToRoute('index');
+       }
+
+    //    $article->setTitle('qwe!');
+    //     $entityManager->flush();
+
+       return $this->render('article/edit.html.twig', [
+        'article' => $article,
+        'form' => $article->createView(),
+    ]);
+   }
 }

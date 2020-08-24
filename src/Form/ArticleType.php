@@ -20,9 +20,9 @@ class ArticleType extends AbstractType
             ->add('participations_contributors')
             ->add('ministerial_points')
             ->add('journal')
-            ->add('conference ')
+            ->add('conference')
             ->add('doi')
-            ->add('date ')
+            ->add('date')
         ;
     }
 
