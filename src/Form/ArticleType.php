@@ -23,6 +23,7 @@ class ArticleType extends AbstractType
             ->add('conference')
             ->add('doi')
             ->add('date')
+            ->add('userid')
         ;
     }
 

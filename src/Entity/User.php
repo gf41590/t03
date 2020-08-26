@@ -87,7 +87,11 @@ class User implements UserInterface
         return $this;
     }
 
-
+    public function getId(): int
+    {
+        return (int) $this->id;
+    }
+ 
 
     /**
      * @see UserInterface

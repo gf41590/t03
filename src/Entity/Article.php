@@ -70,6 +70,11 @@ class Article
      * @ORM\Column(type="date")
      */
     private $date;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $username;
     
 
     public function getId(): ?int
@@ -193,6 +198,22 @@ class Article
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+
+
+    public function setUserid( $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }

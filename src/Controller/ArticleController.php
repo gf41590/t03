@@ -10,8 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Article;
+use App\Entity\User;
 use App\Repository\ArticleRepository;
 use App\Form\ArticleType;
+use App\Repository\UserRepository;
 
 class ArticleController extends AbstractController
 {
@@ -109,10 +111,16 @@ class ArticleController extends AbstractController
     ]);
     }
     /**
-     * @Route("/article", name="article")
+     * @Route("/article", name="article",methods={"GET","POST"})
      */
     public function article(Request $request)
     {
+        
+        $user = $this->getUser();
+         //return new Response('Well hi there '.$user->getId());
+        $userId = $this->getUser()->getId();
+        //return new Response('Well hi there '.$userId);
+
         $form = $this->createFormBuilder()
         ->add('title', TextType::class)
         ->add('author', TextType::class)
@@ -146,6 +154,8 @@ class ArticleController extends AbstractController
             $article->setConference($data['conference']);
             $article->setDoi($data['doi']);
             $article->setDate($data['date']);
+            $article->setUserid($userId);
+            
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
