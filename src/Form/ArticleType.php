@@ -17,13 +17,13 @@ class ArticleType extends AbstractType
             ->add('author')
             ->add('participation')
             ->add('contributors')
-            ->add('participations_contributors')
-            ->add('ministerial_points')
+            ->add('participationsContributors')
+            ->add('ministerialPoints')
             ->add('journal')
             ->add('conference')
             ->add('doi')
             ->add('date')
-            ->add('userid')
+            
         ;
     }
 

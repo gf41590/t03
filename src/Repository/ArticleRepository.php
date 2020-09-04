@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Article[]    findAll()
  * @method Article[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ArticleRepository extends ServiceEntityRepository
+class ArticleRepository extends ServiceEntityRepository 
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -69,16 +69,55 @@ class ArticleRepository extends ServiceEntityRepository
             $qb->expr()->in('a.author', ":term"),
             $qb->expr()->in('a.participation', ":term"),
             $qb->expr()->in('a.contributors', ":term"),
-            $qb->expr()->in('a.participations_contributors', ":term"),
-            $qb->expr()->in('a.ministerial_points', ":term"),
+            $qb->expr()->in('a.participationsContributors', ":term"),
+            $qb->expr()->in('a.ministerialPoints', ":term"),
             $qb->expr()->in('a.journal', ":term"),
             $qb->expr()->in('a.conference ', ":term"),
             $qb->expr()->in('a.doi', ":term"),
-            $qb->expr()->in('a.date_of_publication', ":term"),
+            $qb->expr()->in('a.date', ":term"),
         ))->setParameter('term', $terms);
 
 
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+    *@param string $query
+    *@return mixed
+    */
+    public function findArticleByName(string $query) 
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->orX(
+                        $qb->expr()->like('a.id', ':query'),
+                        $qb->expr()->like('a.title', ':query'),
+                        $qb->expr()->like('a.author', ':query'),
+                        $qb->expr()->like('a.participation', ':query'),
+                        $qb->expr()->like('a.contributors', ':query'),
+                        $qb->expr()->like('a.participationsContributors', ':query'),
+                        $qb->expr()->like('a.ministerialPoints', ':query'),
+                        $qb->expr()->like('a.journal', ':query'),
+                        $qb->expr()->like('a.conference', ':query'),
+                        $qb->expr()->like('a.doi', ':query'),
+                        $qb->expr()->like('a.date', ':query')
+                    ),
+                   
+
+
+                )
+            )
+            ->setParameter('query', '%'  . $query  . '%');
+        return $qb
+        ->getQuery()
+        ->getResult();
+    }
+
+
+    
+
+
 }

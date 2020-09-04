@@ -1,0 +1,26 @@
+
+{% extends "base.html.twig" %}
+{% block title %} Export {% endblock %}
+{% block body %}
+{% if article is defined %}
+    <h3>Articles: </h3>
+    <table style="border: 1px #000000 solid; border-collapse: collapse">
+        <thead>
+            <tr>
+                {% for column in columns %}
+                <th style="border: 1px #000000 solid; border-collapse: collapse">{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in article %}
+            <tr>
+            {% for field in article %}
+            <td style="border: 1px #000000 solid; border-collapse: collapse">{{ field }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}

@@ -14,6 +14,11 @@ use App\Entity\User;
 use App\Repository\ArticleRepository;
 use App\Form\ArticleType;
 use App\Repository\UserRepository;
+use Symfony\Component\Validator\Constraints\DateTime;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Exception\Exception;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
 
 class ArticleController extends AbstractController
 {
@@ -154,7 +159,7 @@ class ArticleController extends AbstractController
             $article->setConference($data['conference']);
             $article->setDoi($data['doi']);
             $article->setDate($data['date']);
-            $article->setUserid($userId);
+            $article->setUsername($user = $this->getUser()->getUsername());
             
 
             $em = $this->getDoctrine()->getManager();
@@ -198,7 +203,7 @@ class ArticleController extends AbstractController
 
             if (!$article) {
             throw $this->createNotFoundException(
-                'No product found for id '.$id
+                'No article found for id '.$id
             );
         }
         
@@ -249,6 +254,196 @@ class ArticleController extends AbstractController
        return $this->render('article/edit.html.twig', [
         'article' => $article,
         'form' => $article->createView(),
-    ]);
+        ]);
    }
+
+
+   
+
+//    public function getEntityManager() 
+//     {
+//         return $this->container->get('doctrine')->getEntityManager();
+//     }
+
+//     /**
+//      * @Route("/pgn", name="pgn_show")
+//      */
+//    public function listAction(PaginatorInterface $paginator, Request $request)
+//    {
+//        $dql   = "SELECT a FROM article:Article a";
+//        $query->createQuery($dql);
+   
+//        $pagination = $paginator->paginate(
+//            $query, /* query NOT result */
+//            $request->query->getInt('page', 1), /*page number*/
+//            5 /*limit per page*/
+//        );
+   
+//        // parameters to template
+//        return $this->render('article/list.html.twig', ['pagination' => $pagination]);
+//    }
+
+
+     /**
+     * @Route("/export", name="article_export", methods={"POST","GET"})
+     */
+    public function export(Request $request, ArticleRepository $articleRepository): Response
+    {
+
+        // $repository = $this->getDoctrine()->getRepository(Article::class);
+         
+
+        // $article = $repository->findAll();
+
+
+        $request = Request::createFromGlobals();
+
+        // $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+        // ->enableExceptionOnInvalidIndex()
+        // ->getPropertyAccessor();
+
+
+        // $i = 0;
+        // $ids = [];
+        // while (isset($request->get('form')[$i])) {
+        //     $ids[$i] = ($request->get('form')[$i]);
+        //     $i = $i + 1;
+            
+        // }
+        
+        $all = true;
+        $columns = '';
+        //$request->get('field')
+
+        dump($id = $request->request->get('form'));
+        //dump($request->query=('SELECT partial a.{id} FROM article'));
+        // dump($article = $this->getDoctrine()->getRepository(Article::class)->find($id));
+
+        // dump($value = $propertyAccessor->getValue($article , ['id']));
+
+        if(!empty($id = $request->query->get('form'))) {
+            $columns = $id;
+        }
+        if(!empty($request->get('title'))) {
+            $columns = 'a.title,';
+        }
+        if(!empty($request->get('author'))) {
+            $columns = 'a.author,';
+        }
+        if(!empty($request->get('participation'))) {
+            $columns = 'a.participation,';
+        }
+        if(!empty($request->get('contributors'))) {
+            $columns = 'a.contributors,';
+        }
+        if(!empty($request->get('participationsContributors'))) {
+            $columns = 'a.participationsContributors,';
+        }
+        if(!empty($request->get('ministerialPoints'))) {
+            $columns = 'a.ministerialPoints,';
+        }
+        if(!empty($request->get('journal'))) {
+            $columns = 'a.journal,';
+        }
+        if(!empty($request->get('conference'))) {
+            $columns = 'a.conference,';
+        }
+        if(!empty($request->get('doi'))) {
+            $columns = 'a.doi,';
+        }
+        if(!empty($request->get('date'))) {
+            $columns = 'a.date,';
+        }
+        if(empty($columns)) {
+            $columns = 'a';
+        } else {
+            $all = false;
+            $columns = rtrim($columns, ',');
+        }
+
+        $ids = '';
+        for ($i = 1; $i <= 11; $i++) {
+            if(null !== $request->get("row_".$i)) {
+            if($i > 11) $ids = $i;
+            $ids = ' '.$ids.''.$i.',';
+        }
+
+        }
+        if(empty($ids)) {
+            $rows = '';
+        } else {
+            $rows = rtrim($ids, ',');
+        }
+
+        $article = $articleRepository->createQueryBuilder('a')
+        ->select($columns);
+
+        if(!empty($rows)) {
+        $article = $article->where("a.id IN (".$rows.")");
+        }
+
+        $article = $article->getQuery()
+        ->getResult();
+
+        $art = [];
+        foreach($article as $article) {
+            $isEmpty = true;
+            foreach($article as $field ) {
+                if ($field instanceof \DateTime) {
+                    $article['date'] = $field->format('Y-m-d');
+                }
+                if($field) $isEmpty = false;
+            }
+            if(!$isEmpty) array_push($art, $article);
+        }
+        if($columns !== 'a') {
+        $columns = str_replace('a.', '', $columns);
+        $columns = explode(',', $columns);
+        }else {
+
+            $columns=['id', 'title', 'author', 'participation', 'contributors', 'participationsContributors', 'ministerialPoints', 'journal', 'conference', 'doi', 'date'];
+           
+        }
+
+        if($columns) {
+
+            // Instantiate Dompdf with our options
+            $phpWord = new phpWord();
+            
+            $twig = $this->get('twig');
+            /** @var \Twig_Template $template */
+            $template = $twig->load('article/preview.html.twig');
+    
+            // Retrieve the HTML generated in our twig file
+            $html = $template->renderBlock('body',[
+                'article' => $art,
+                'columns' => $columns,
+            ]);
+        
+            $section = $phpWord->addSection();
+    
+            \PhpOffice\PhpWord\Shared\Html::addHtml($section, $html);
+            // Saving the document as OOXML file...
+
+            $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+            header("Content-Disposition: attachment; filename=export.docx");
+            $objWriter->save("php://output");
+
+            return $this->render('article/preview.html.twig', [
+                'article' => $art,
+                'columns' => $columns,
+            ]);
+
+        }
+
+
+
+
+
+    }
+
+
+
+
+
 }
