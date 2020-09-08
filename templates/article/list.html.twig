@@ -1,33 +1,39 @@
 {% extends 'base.html.twig' %}
 
+ {% block stylesheets %}
+      <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" />
+  {% endblock %}
+
 {% block body %}
     {% if article is defined and article|length %}
 
         <div class="nav text-center">
             {{ knp_pagination_render(article) }}
         </div>
-
+        <form action="{{ path('article_export') }}" method="POST">
         <table class="table table-striped">
-            <thead>
+            <thead >
             <tr>
-                <th>{{ knp_pagination_sortable(article, 'id'|trans, 't.id') }}<input type="checkbox" name='id' /></th>
-                <th>{{ knp_pagination_sortable(article, 'title'|trans, 't.title') }}<input type="checkbox" name='title' /></th>
-                <th>{{ knp_pagination_sortable(article, 'participation'|trans, 't.participation') }}<input type="checkbox" name='participation' /></th>
-                <th>{{ knp_pagination_sortable(article, 'contributors'|trans, 't.contributors') }}<input type="checkbox" name='contributors' /></th>
-                <th>{{ knp_pagination_sortable(article, 'participations contributors'|trans, 't.participationsContributors') }}<input type="checkbox" name='participationsContributors' /></th>
-                <th>{{ knp_pagination_sortable(article, 'ministerial points'|trans, 't.ministerialPoints') }}<input type="checkbox" name='ministerialPoints' /></th>
-                <th>{{ knp_pagination_sortable(article, 'journal'|trans, 't.journal') }}<input type="checkbox" name='journal' /></th>
-                <th>{{ knp_pagination_sortable(article, 'conference'|trans, 't.conference') }}<input type="checkbox" name='conference' /></th>
-                <th>{{ knp_pagination_sortable(article, 'doi'|trans, 't.doi') }}<input type="checkbox" name="doi" /></th>
-                <th>{{ knp_pagination_sortable(article, 'date'|trans, 't.date') }}<input type="checkbox" name="date" /></th>
+                <th>{{ knp_pagination_sortable(article, 'id'|trans, 'a.id') }}<input type="checkbox" name='id' value='id'  /></th>
+                <th>{{ knp_pagination_sortable(article, 'title'|trans, 'a.title') }}<input type="checkbox" name='title'  value='title'/></th>
+                <th>{{ knp_pagination_sortable(article, 'author'|trans, 'a.title') }}<input type="checkbox" name='author'  value='author'/></th>
+                <th>{{ knp_pagination_sortable(article, 'participation'|trans, 'a.participation') }}<input type="checkbox" name='participation'  value='par.'/></th>
+                <th>{{ knp_pagination_sortable(article, 'contributors'|trans, 'a.contributors') }}<input type="checkbox" name='contributors'  value='contributors'/></th>
+                <th>{{ knp_pagination_sortable(article, 'participations contributors'|trans, 'a.participationsContributors') }}<input type="checkbox" name='participationsContributors' value='participationsContributors'/></th>
+                <th>{{ knp_pagination_sortable(article, 'ministerial points'|trans, 'a.ministerialPoints') }}<input type="checkbox" name='ministerialPoints' value='ministerialPoints'/></th>
+                <th>{{ knp_pagination_sortable(article, 'journal'|trans, 'a.journal') }}<input type="checkbox" name='journal' value='journal'/></th>
+                <th>{{ knp_pagination_sortable(article, 'conference'|trans, 'a.conference') }}<input type="checkbox" name='conference' value='conference'/></th>
+                <th>{{ knp_pagination_sortable(article, 'doi'|trans, 'a.doi') }}<input type="checkbox" name='doi' value="doi"/></th>
+                <th>{{ knp_pagination_sortable(article, 'date'|trans, 'a.date') }}<input type="checkbox" name='date' value="date" /></th>
             </tr>
             </thead>
             <tbody>
             {% for article in article %}
                 <tr>
                     
-                    <td><input type="checkbox" name='row_{{article.id}}' />{{ article.id }}</td>
+                    <td><input type="checkbox" name='row_{{article.id}}'/>{{ article.id }}</td>
                     <td>{{ article.title }}</td>
+                    <td>{{ article.author }}</td>
                     <td>{{ article.participation}}</td>
                     <td>{{ article.contributors}}</td>
                     <td>{{ article.participationsContributors}}</td>
@@ -51,9 +57,10 @@
         </p>
     {% endif %}
 
-    <form method="post" action="{{ path('article_export') }}" onsubmit="return confirm('Are you sure?');">
-   
+    {# <form method="post" action="{{ path('article_export') }}" onsubmit="return confirm('Are you sure?');">
+    #}
     <input type = "submit" name="submit_docs"  value="Export" class="input-button"/> 
-    </from>
+    
+    {# </from> #}
 
 {% endblock %}

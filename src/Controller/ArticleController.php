@@ -285,7 +285,7 @@ class ArticleController extends AbstractController
 
 
      /**
-     * @Route("/export", name="article_export", methods={"POST","GET"})
+     * @Route("/export", name="article_export", methods={"POST"})
      */
     public function export(Request $request, ArticleRepository $articleRepository): Response
     {
@@ -296,12 +296,11 @@ class ArticleController extends AbstractController
         // $article = $repository->findAll();
 
 
-        $request = Request::createFromGlobals();
+        //$request = Request::createFromGlobals();
 
         // $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
         // ->enableExceptionOnInvalidIndex()
         // ->getPropertyAccessor();
-
 
         // $i = 0;
         // $ids = [];
@@ -310,49 +309,50 @@ class ArticleController extends AbstractController
         //     $i = $i + 1;
             
         // }
-        
+        //$id = isset($_GET['id']) ? $_GET['id'] : '';
         $all = true;
         $columns = '';
+        
         //$request->get('field')
-
-        dump($id = $request->request->get('form'));
+        //$request->request->get('form_name')['name']
+        //dump(isset( $_GET['id']));
         //dump($request->query=('SELECT partial a.{id} FROM article'));
         // dump($article = $this->getDoctrine()->getRepository(Article::class)->find($id));
 
         // dump($value = $propertyAccessor->getValue($article , ['id']));
 
-        if(!empty($id = $request->query->get('form'))) {
-            $columns = $id;
-        }
+        if(!empty($request->get('id'))) {
+            $columns = $columns.'a.id,';
+        } 
         if(!empty($request->get('title'))) {
-            $columns = 'a.title,';
+            $columns = $columns.'a.title,';
         }
         if(!empty($request->get('author'))) {
-            $columns = 'a.author,';
+            $columns = $columns.'a.author,';
         }
         if(!empty($request->get('participation'))) {
-            $columns = 'a.participation,';
+            $columns = $columns.'a.participation,';
         }
         if(!empty($request->get('contributors'))) {
-            $columns = 'a.contributors,';
+            $columns = $columns.'a.contributors,';
         }
         if(!empty($request->get('participationsContributors'))) {
-            $columns = 'a.participationsContributors,';
+            $columns = $columns.'a.participationsContributors,';
         }
         if(!empty($request->get('ministerialPoints'))) {
-            $columns = 'a.ministerialPoints,';
+            $columns = $columns.'a.ministerialPoints,';
         }
         if(!empty($request->get('journal'))) {
-            $columns = 'a.journal,';
+            $columns = $columns.'a.journal,';
         }
         if(!empty($request->get('conference'))) {
-            $columns = 'a.conference,';
+            $columns = $columns.'a.conference,';
         }
         if(!empty($request->get('doi'))) {
-            $columns = 'a.doi,';
+            $columns = $columns.'a.doi,';
         }
         if(!empty($request->get('date'))) {
-            $columns = 'a.date,';
+            $columns = $columns.'a.date,';
         }
         if(empty($columns)) {
             $columns = 'a';
@@ -362,9 +362,9 @@ class ArticleController extends AbstractController
         }
 
         $ids = '';
-        for ($i = 1; $i <= 11; $i++) {
+        for ($i = 1; $i <= 13; $i++) {
             if(null !== $request->get("row_".$i)) {
-            if($i > 11) $ids = $i;
+            if($i > 13) $ids = $i;
             $ids = ' '.$ids.''.$i.',';
         }
 
@@ -375,15 +375,13 @@ class ArticleController extends AbstractController
             $rows = rtrim($ids, ',');
         }
 
-        $article = $articleRepository->createQueryBuilder('a')
-        ->select($columns);
+        $article = $articleRepository->createQueryBuilder('a')->select($columns);
 
         if(!empty($rows)) {
         $article = $article->where("a.id IN (".$rows.")");
         }
 
-        $article = $article->getQuery()
-        ->getResult();
+        $article = $article->getQuery()->getResult();
 
         $art = [];
         foreach($article as $article) {
@@ -443,7 +441,82 @@ class ArticleController extends AbstractController
     }
 
 
+    // /**
+    //  * @Route("/exp", name="exp", methods={"POST","GET"})
+    //  */
+    // public function exp(Request $request, ArticleRepository $articleRepository): Response
+    // {
 
+    //     $inputs = $_POST;
+    //     $inputs['printdate']=''; 
+    //     // A dummy value to avoid a PHP notice as we don't have "printdate" in the POST variables. 
+
+    //     $assembly = 'Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c';
+    //     $class = 'Microsoft.Office.Interop.Word.ApplicationClass';
+
+    //     $w = new DOTNET($assembly, $class);
+    //     $w->visible = true;
+
+    //     $fn = __DIR__ . '\\template.docx';
+
+    //     $d = $w->Documents->Open($fn);
+
+    //     echo "Document opened.<br><hr>";
+
+    //     $flds = $d->Fields;
+    //     $count = $flds->Count;
+    //     echo "There are $count fields in this document.<br>";
+    //     echo "<ul>";
+    //     $mapping = setupfields();
+
+    //     foreach ($flds as $index => $f)
+    //     {
+    //         $f->Select();
+    //         $key = $mapping[$index];
+    //         $value = $inputs[$key];
+
+    //         if($key=='date')
+    //             $value=  date ('Y-m-d H:i:s');
+
+    //         $w->Selection->TypeText($value);
+    //         echo "<li>Mappig field $index: $key with value $value</li>";
+    //     }
+    //     echo "</ul>";
+
+    //     echo "Mapping done!<br><hr>";
+    //     echo "Printing. Please wait...<br>";
+
+    //     $d->PrintOut();
+    //     sleep(3);
+    //     echo "Done!";
+
+    //     $w->Quit(false);
+    //     $w=null;
+
+
+
+    //     function setupfields()
+    //     {
+    //         $mapping = array();
+    //         $mapping[0] = 'id';
+    //         $mapping[1] = 'title';
+    //         $mapping[2] = 'participation';
+    //         $mapping[3] = 'contributors';
+    //         $mapping[4] = 'participationsContributors';
+    //         $mapping[5] = 'ministerialPoints';
+    //         $mapping[6] = 'journal';
+    //         $mapping[7] = 'conference';
+    //         $mapping[8] = 'doi';
+    //         $mapping[9] = 'date';
+    //         $mapping[10] = '{{article.id}}';
+        
+            
+
+    //         return $mapping;
+    //     }
+
+
+    // }
 
 
 }
