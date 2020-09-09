@@ -18,12 +18,12 @@ class Test2Controller extends AbstractController
     /**
      * @var ArticleRepository
      */
-    private $articleRepository;
+    public $articleRepository;
 
     /**
      * @var PaginatorInterface
      */
-    private $paginator;
+    public $paginator;
 
     /**
      * @param ArticleRepository  $articleRepository
@@ -39,7 +39,7 @@ class Test2Controller extends AbstractController
 
     // const PAGE_LIMIT = 5;
     /**
-     * @Route("/article/list/{page}", methods={"GET"})
+     * @Route("/list/{page}", methods={"POST","GET"})
      */
     public function list(int $page): Response
     {

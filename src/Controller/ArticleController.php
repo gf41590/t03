@@ -3,6 +3,7 @@
 namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+// use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -222,7 +223,37 @@ class ArticleController extends AbstractController
 
         $article = $repository->findAll();
 
-        return $this->render('test/index.html.twig', ['article' => $article]);
+
+
+        return $this->render('test/index.html.twig', [           
+            'article' => $article ,
+        
+            ]);
+
+    }
+
+    /**
+     * @Route("/xzcvb", name="list")
+     */
+        public function listAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $art = $em->getRepository(Article::class)->findAll();
+        $art = $em->getRepository(Article::class)->createQueryBuilder('a')->getQuery();
+
+
+        $paginator  = $this->get('knp_paginator');
+
+        $result = $paginator->paginate(
+            $art, 
+            $request->query->get('page',1),
+            10
+        );
+
+        return $this->render('test/index.html.twig', [
+            'art_post' => $result
+        ]);
     }
 
 
@@ -260,10 +291,6 @@ class ArticleController extends AbstractController
 
    
 
-//    public function getEntityManager() 
-//     {
-//         return $this->container->get('doctrine')->getEntityManager();
-//     }
 
 //     /**
 //      * @Route("/pgn", name="pgn_show")

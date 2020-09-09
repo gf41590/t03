@@ -1,13 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
+{% block title %}Bibliometr{% endblock %}
 
  {% block stylesheets %}
       <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" />
   {% endblock %}
 
+
+
 {% block body %}
 
+    {% block search %}
+        <div class="search">
+            {{ render(controller(
+                'App\\Controller\\SearchController::searchBar'
+            )) }}
+        </div>
+    {% endblock %}
+
+    {% block exp %}
+
+        <div class="art"> 
+            {{ render(controller(
+                'App\\Controller\\Test2Controller::list'
+                ,{'page' : 1}    
+            )) }}
+           
+        </div>
+
+    {% endblock %}
+
+    {# {% block exp %}
+        {% include 'article\\list.html.twig' with {'1': '2'} %}
+    {% endblock %} #}
+
+
+<button clas = "but"><a href="{{ "http://localhost:8000/register" }}" >{{ "Register" }}</a></button>
+<button clas = "but"><a href="{{ "http://localhost:8000/login" }}" >{{ "Login" }}</a></button>
 {% if is_granted('ROLE_USER') %}
     <button><a href="{{ "http://localhost:8000/article" }}" >{{ "Add article" }}</a></button>
 {% endif %}

@@ -48,7 +48,9 @@
         </table>
 
         <div class="nav text-center">
-            {{ knp_pagination_render(article) }}
+            {# {{ knp_pagination_render(article) }} #}
+            <a href="{{ "http://localhost:8000/" }}" >{{ "1" }}</a>
+            <a href="{{ "http://localhost:8000/list/2" }}" >{{ "2" }}</a>
         </div>
 
     {% else %}
