@@ -9,18 +9,20 @@
 
 
 {% block body %}
-
+<center>
     {% block search %}
-        <div class="search">
+        
+        
             {{ render(controller(
                 'App\\Controller\\SearchController::searchBar'
             )) }}
-        </div>
+        
+        
     {% endblock %}
 
     {% block exp %}
 
-        <div class="art"> 
+        <div class="art "> 
             {{ render(controller(
                 'App\\Controller\\Test2Controller::list'
                 ,{'page' : 1}    
@@ -34,12 +36,15 @@
         {% include 'article\\list.html.twig' with {'1': '2'} %}
     {% endblock %} #}
 
-
-<button clas = "but"><a href="{{ "http://localhost:8000/register" }}" >{{ "Register" }}</a></button>
-<button clas = "but"><a href="{{ "http://localhost:8000/login" }}" >{{ "Login" }}</a></button>
-{% if is_granted('ROLE_USER') %}
-    <button><a href="{{ "http://localhost:8000/article" }}" >{{ "Add article" }}</a></button>
-{% endif %}
+    <br>
+        <button clas = "but"><a href="{{ "http://localhost:8000/contact" }}" >{{ "Contact" }}</a></button>
+    {% if is_granted('ROLE_USER') %}
+        <button><a href="{{ "http://localhost:8000/article" }}" >{{ "Add article" }}</a></button>
+        <button><a href="{{ path('app_logout') }}">Logout</a></button>
+    {% else %}
+        <button clas = "but" style="width = 50px"><a href="{{ "http://localhost:8000/register" }}" >{{ "Register" }}</a></button>
+        <button clas = "but"><a href="{{ "http://localhost:8000/login" }}" >{{ "Login" }}</a></button>
+    {% endif %}
     
 {% endblock %}
 

@@ -4,11 +4,11 @@
 {% block body %}
 {% if article is defined %}
     <h3>Articles: </h3>
-    <table style="border: 1px #000000 solid; border-collapse: collapse">
+    <table style="border: 1px solid black; border-collapse: collapse; text-align:center ">
         <thead>
             <tr>
                 {% for column in columns %}
-                <th style="border: 1px #000000 solid; border-collapse: collapse">{{ column }}</th>
+                <th style="border: 1px solid black; border-collapse: collapse;  text-align:center ">{{ column }}</th>
                 {% endfor %}
             </tr>
         </thead>
@@ -16,7 +16,7 @@
         {% for article in article %}
             <tr>
             {% for field in article %}
-            <td style="border: 1px #000000 solid; border-collapse: collapse">{{ field }}</td>
+            <td style="border: 1px solid black; border-collapse: collapse;  text-align:center ">{{ field }}</td>
             {% endfor %}
             </tr>
         {% endfor %}

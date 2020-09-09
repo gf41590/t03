@@ -9,6 +9,7 @@ table, th, td {
 }
 
 .search{
- align-content: center;
- color: black;
+ content: center;
+ font:color = red;
+ margin-right: 10%;
 }
