@@ -248,7 +248,7 @@ class ArticleController extends AbstractController
         $result = $paginator->paginate(
             $art, 
             $request->query->get('page',1),
-            10
+           
         );
 
         return $this->render('test/index.html.twig', [
@@ -288,6 +288,33 @@ class ArticleController extends AbstractController
         ]);
    }
 
+
+     /**
+     * @Route("/my_articles", name="my_art", methods={"GET","POST"})
+     */
+    public function findMyArticles($username): array
+    {
+        {
+            $entityManager = $this->getEntityManager();
+
+            $user = $this->getUser();
+            $username = $this->getUser()->getUsername();
+    
+            $query = $entityManager->createQuery(
+                'SELECT a
+                FROM App\Entity\Article a
+                WHERE a.username == username'
+            )->setParameter('username', $username);
+    
+            // returns an array of Product objects
+            return $query->getResult();
+        }
+        return $this->render('article/myarticle.html.twig', [
+            'username' => $username,
+            
+            ]);
+
+    }
 
     /**
      * @Route("/deletet/{id}", name="article_delete", methods={"GET","DELETE"})

@@ -41,6 +41,11 @@ class SearchController extends AbstractController
         $query = $request->request->get('form')['query'];
         if ($query){
             $article = $articleRepository ->findArticleByName($query);
+
+        }else{
+            throw $this->createNotFoundException(
+                'No record  found' 
+            );
         }
 
         return $this->render('search/result.html.twig', [

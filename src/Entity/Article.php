@@ -107,12 +107,12 @@ class Article
         return $this;
     }
 
-    public function getParticipation(): ?string
+    public function getParticipation(): ?int
     {
         return $this->participation;
     }
 
-    public function setParticipation(string $participation): self
+    public function setParticipation(int $participation): self
     {
         $this->participation = $participation;
 
@@ -219,7 +219,12 @@ class Article
         return $this;
     }
 
+    public function setNick(string $nick): self
+    {
+        $this->nick = $nick;
 
+        return $this;
+    }
 
 }
 

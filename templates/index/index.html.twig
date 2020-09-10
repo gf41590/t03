@@ -19,7 +19,7 @@
         
         
     {% endblock %}
-
+    <br>
     {% block exp %}
 
         <div class="art "> 
@@ -40,6 +40,7 @@
         <button clas = "but"><a href="{{ "http://localhost:8000/contact" }}" >{{ "Contact" }}</a></button>
     {% if is_granted('ROLE_USER') %}
         <button><a href="{{ "http://localhost:8000/article" }}" >{{ "Add article" }}</a></button>
+        <button><a href="{{ path('my_art') }}">My articles</a></button>
         <button><a href="{{ path('app_logout') }}">Logout</a></button>
     {% else %}
         <button clas = "but"><a href="{{ "http://localhost:8000/register" }}" >{{ "Register" }}</a></button>

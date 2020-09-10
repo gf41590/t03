@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Articles{% endblock %}
+
+{% block body %}
+    <form action="{{ path('article_export') }}" method="POST">
+    <table border="solid black">
+    <tbody style="text-align:center">
+        <tr>
+            	<th>Id<input type="checkbox" name='id' value='id'/></th>
+                <th>Title<input type="checkbox" name='title'  value='title'/></th>
+                <th>Author<input type="checkbox" name='author'  value='author'/></th>
+                <th>Participation<input type="checkbox" name='participation'  value='participation'/></th>
+                <th>Contributors<input type="checkbox" name='contributors'  value='contributors'/></th>
+                <th>Participations contributors<input type="checkbox" name='participationsContributors' value='participationsContributors'/></th>
+                <th>Ministerial points<input type="checkbox" name='ministerialPoints' value='ministerialPoints'/></th>
+                <th>Journal<input type="checkbox" name='journal' value='journal'/></th>
+                <th>Conference<input type="checkbox" name='conference' value='conference'/></th>
+                <th>Doi<input type="checkbox" name='doi' value="doi"/></th>
+                <th>Date<input type="checkbox" name='date' value="date"/></th>
+        </tr>
+        {% for article in article %}
+        <tr>
+
+            <td><input type="checkbox" name='row_{{article.id}}'/>{{ article.id }}</td>
+            <td>{{ article.title }}</td>
+            <td>{{ article.author }}</td>
+            <td>{{ article.participation}}</td>
+            <td>{{ article.contributors}}</td>
+            <td>{{ article.participationsContributors}}</td>
+            <td>{{ article.ministerialPoints}}</td>
+            <td>{{ article.journal}}</td>
+            <td>{{ article.conference}}</td>
+            <td>{{ article.doi}}</td>
+            <td>{{ article.date ? article.date|date('Y-m-d') : '' }}</td>
+            
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <input type = "submit" name="submit_docs"  value="Export" class="input-button"/>
+
+{% endblock %}

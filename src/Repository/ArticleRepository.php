@@ -52,35 +52,7 @@ class ArticleRepository extends ServiceEntityRepository
     }
     */
 
-    /**
-     * @return Article[]
-     */
-    public function findAllByTerm($term): array
-    {
-
-    $qb = $this->createQueryBuilder('a');
-
-    $terms = explode(" ", $term); 
-
-
-        $qb->andWhere($qb->expr()->orX(
-            $qb->expr()->in('a.id', ":term"),
-            $qb->expr()->in('a.title', ":term"),
-            $qb->expr()->in('a.author', ":term"),
-            $qb->expr()->in('a.participation', ":term"),
-            $qb->expr()->in('a.contributors', ":term"),
-            $qb->expr()->in('a.participationsContributors', ":term"),
-            $qb->expr()->in('a.ministerialPoints', ":term"),
-            $qb->expr()->in('a.journal', ":term"),
-            $qb->expr()->in('a.conference ', ":term"),
-            $qb->expr()->in('a.doi', ":term"),
-            $qb->expr()->in('a.date', ":term"),
-        ))->setParameter('term', $terms);
-
-
-
-        return $qb->getQuery()->execute();
-    }
+    
 
     /**
     *@param string $query
@@ -105,8 +77,6 @@ class ArticleRepository extends ServiceEntityRepository
                         $qb->expr()->like('a.doi', ':query'),
                         $qb->expr()->like('a.date', ':query')
                     ),
-                   
-
 
                 )
             )
@@ -117,7 +87,23 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
 
-    
+    /**
+     * @return Article[]
+     */
+    public function findMyArticles($username): array
+    {
+        $entityManager = $this->getEntityManager();
 
+        $query = $entityManager->createQuery(
+            'SELECT a
+            FROM App\Entity\Article a
+            WHERE a.username == app.user.username'
+        )->setParameter('username', $username);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
+    
 
 }
