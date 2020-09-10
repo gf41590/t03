@@ -63,4 +63,57 @@ class RegisterController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+
+    /**
+     * @Route("/reg", name="register_admin")
+     */
+    public function reg(Request $request, UserPasswordEncoderInterface $passEncoder )
+    {
+       $form = $this->createFormBuilder()
+            ->add('username')
+            ->add('email', EmailType::class)
+            ->add('university', TextType::class)
+            ->add('roles')
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'required' => true,
+                'first_options' => ['label' => 'Password'],
+                'second_options' => ['label' => 'Confirm Password']
+
+            ])
+            ->add('register', SubmitType::class, [ 
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->getForm();
+
+
+        $form->handleRequest($request);
+        if($form->isSubmitted()) {
+            $data = $form->getData();
+
+            $user = new User();
+            $user->setUsername($data['username']);
+            $user->setEmail($data['email']);
+            $user->setUniversity($data['university']);
+            $user->setRoles($data['roles']);
+            $user->setPassword(
+                $passEncoder->encodePassword($user, $data['password'])
+            );
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('app_login'));
+
+        }
+
+        return $this->render('register/adm.html.twig', [ 
+            'form' => $form->createView()
+        ]);
+    }
+
 }

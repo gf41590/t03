@@ -42,6 +42,16 @@
                     <td>{{ article.conference}}</td>
                     <td>{{ article.doi}}</td>
                     <td>{{ article.date ? article.date|date('Y-m-d') : '' }}</td>
+                        {% if is_granted('ROLE_USER') %}
+                            {% if  app.user.username == 'admin' %}
+                                <td><button><a href="{{ path('article_delete', {'id': article.id}) }}">delete</a></button></td>
+                            {% endif %}
+                        {% endif %}
+                    {% if is_granted('ROLE_USER') %}
+                        {% if  app.user.username == article[12] %}
+                            <td><button><a href="{{ path('article_edit', {'id': article.id}) }}">edit</a></button></td>
+                        {% endif %}
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
@@ -64,5 +74,6 @@
     <input type = "submit" name="submit_docs"  value="Export" class="input-button"/> 
     
     {# </from> #}
+
 
 {% endblock %}

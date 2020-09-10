@@ -36,13 +36,13 @@
         {% include 'article\\list.html.twig' with {'1': '2'} %}
     {% endblock %} #}
 
-    <br>
+    <br><br>
         <button clas = "but"><a href="{{ "http://localhost:8000/contact" }}" >{{ "Contact" }}</a></button>
     {% if is_granted('ROLE_USER') %}
         <button><a href="{{ "http://localhost:8000/article" }}" >{{ "Add article" }}</a></button>
         <button><a href="{{ path('app_logout') }}">Logout</a></button>
     {% else %}
-        <button clas = "but" style="width = 50px"><a href="{{ "http://localhost:8000/register" }}" >{{ "Register" }}</a></button>
+        <button clas = "but"><a href="{{ "http://localhost:8000/register" }}" >{{ "Register" }}</a></button>
         <button clas = "but"><a href="{{ "http://localhost:8000/login" }}" >{{ "Login" }}</a></button>
     {% endif %}
     

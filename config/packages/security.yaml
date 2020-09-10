@@ -5,6 +5,12 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
+        in_memory:
+            memory:
+                users:
+                    admin:
+                        password: admin
+                        roles: 'ROLE_ADMIN'
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
@@ -37,3 +43,11 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/index, roles: ROLE_USER }
+
+
+    role_hierarchy:
+        ROLE_ADMIN:  ROLE_USER
+
+
+  
+        

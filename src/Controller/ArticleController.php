@@ -289,7 +289,23 @@ class ArticleController extends AbstractController
    }
 
 
-   
+    /**
+     * @Route("/deletet/{id}", name="article_delete", methods={"GET","DELETE"})
+     */
+    public function delete($id,Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $del = $entityManager->getRepository(Article::class)->find($id);
+        if(!$del){
+            throw $this->createNotFoundException(
+                'No record for the del with id :' .$id
+            );
+        }
+        $entityManager->remove($del);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('index');
+    }
 
 
 //     /**
