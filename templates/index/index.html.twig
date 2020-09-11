@@ -41,7 +41,9 @@
     {% if is_granted('ROLE_USER') %}
         <button><a href="{{ "http://localhost:8000/article" }}" >{{ "Add article" }}</a></button>
         <button><a href="{{ path('my_art') }}">My articles</a></button>
-        <button><a href="{{ path('app_logout') }}">Logout</a></button>
+        {{ render(controller(
+                'App\\Controller\\LogoutController::logout'
+            )) }}
     {% else %}
         <button clas = "but"><a href="{{ "http://localhost:8000/register" }}" >{{ "Register" }}</a></button>
         <button clas = "but"><a href="{{ "http://localhost:8000/login" }}" >{{ "Login" }}</a></button>

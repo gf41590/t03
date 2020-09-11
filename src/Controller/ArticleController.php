@@ -3,7 +3,7 @@
 namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-// use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -292,25 +292,18 @@ class ArticleController extends AbstractController
      /**
      * @Route("/my_articles", name="my_art", methods={"GET","POST"})
      */
-    public function findMyArticles($username): array
+    public function findArticles( ArticleRepository $articleRepository, UserRepository $userRepository )
     {
-        {
-            $entityManager = $this->getEntityManager();
+        $user = $this->getUser();
+        $username = $this->getUser()->getUsername();
 
-            $user = $this->getUser();
-            $username = $this->getUser()->getUsername();
-    
-            $query = $entityManager->createQuery(
-                'SELECT a
-                FROM App\Entity\Article a
-                WHERE a.username == username'
-            )->setParameter('username', $username);
-    
-            // returns an array of Product objects
-            return $query->getResult();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $entityManager->getRepository(Article::class);
+        $article = $repository->findBy(['username'=>$username]);
+
         return $this->render('article/myarticle.html.twig', [
             'username' => $username,
+            'article' => $article
             
             ]);
 

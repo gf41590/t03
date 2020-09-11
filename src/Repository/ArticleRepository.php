@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
 
 /**
  * @method Article|null find($id, $lockMode = null, $lockVersion = null)
@@ -87,22 +88,26 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
 
-    /**
-     * @return Article[]
-     */
-    public function findMyArticles($username): array
-    {
-        $entityManager = $this->getEntityManager();
+    
 
-        $query = $entityManager->createQuery(
-            'SELECT a
-            FROM App\Entity\Article a
-            WHERE a.username == app.user.username'
-        )->setParameter('username', $username);
+    // /**
+    // * @return mixed
+    // * @return Article[]
+    // */
+    // public function findMyArticles(): array
+    // {
+    //     $entityManager = $this->getEntityManager();
 
-        // returns an array of Product objects
-        return $query->getResult();
-    }
+    //     $query = $this->createQueryBuilder('a');
+    //     $query = $entityManager->createQuery(
+    //         'SELECT a
+    //         FROM App\Entity\Article a
+    //         WHERE a.username = "username" '
+    //     )->setParameter('query', $query);
+
+        
+    //     return $query->getResult();
+    // }
 
     
 

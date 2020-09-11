@@ -33,7 +33,6 @@
                     
                     <td><input type="checkbox" name='row_{{article.id}}'/>{{ article.id }}</td>
                     <td>{{ article.title }}</td>
-                    
                     <td>{{ article.author }}</td>
                     <td>{{ article.participation}}</td>
                     <td>{{ article.contributors}}</td>
@@ -48,13 +47,13 @@
                                 <td><button><a href="{{ path('article_delete', {'id': article.id}) }}">delete</a></button></td>
                             {% endif %}
                         {% endif %}
-                    {% if is_granted('ROLE_USER') %}
+                    {# {% if is_granted('ROLE_USER') %}
                     
                         {% if  app.user.username == article[12]  %}
                             <td><button><a href="{{ path('article_edit', {'id': article.id}) }}">edit</a></button></td>
                         {% endif %}
                    
-                    {% endif %}
+                    {% endif %} #}
                 </tr>
             {% endfor %}
             </tbody>

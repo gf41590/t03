@@ -2,7 +2,12 @@
 
 {% block title %}My Articles{% endblock %}
 
+ {% block stylesheets %}
+      <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" />
+  {% endblock %}
+
 {% block body %}
+<center>
     <form action="{{ path('article_export') }}" method="POST">
     <table border="solid black">
     <tbody style="text-align:center">
@@ -33,12 +38,13 @@
             <td>{{ article.conference}}</td>
             <td>{{ article.doi}}</td>
             <td>{{ article.date ? article.date|date('Y-m-d') : '' }}</td>
-            
+            <td><button><a href="{{ path('article_edit', {'id': article.id}) }}">edit</a></button></td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
 
     <input type = "submit" name="submit_docs"  value="Export" class="input-button"/>
-
+    <br><br>
+    <button><a href="{{ path('index') }}">back to list</a></button>
 {% endblock %}
